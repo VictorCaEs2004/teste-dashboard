@@ -1,0 +1,27 @@
+{
+  "name": "java",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "format": "prettier --write .",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "postinstall": "npm run build",
+    "postbuild": "npm run serve",
+    "prettier": "prettier --write ."
+    
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.1.2",
+    "vite": "^6.2.5"
+  }
+}
