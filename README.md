@@ -1,3 +1,3 @@
 # teste-dashboard
 
-Dashboard de iot com Tailwild 
+Dashboard de iot com Tailwind 
