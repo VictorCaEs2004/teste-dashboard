@@ -1,15 +1,70 @@
-
-<!doctype html>
-<html>
+<!DOCTYPE html<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="/src/styles.css" rel="stylesheet">
+  <title>Dashboard Histórico de Edição</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
-  <h1 class="text-3xl font-bold underline">
-    Hello world!
-  </h1>
+<body class="bg-gray-100 font-sans">
+  <div class="flex h-screen">
+    <!-- Sidebar -->
+    <aside class="w-20 bg-gray-900 text-white flex flex-col items-center py-4">
+      <div class="mb-4 text-lg font-bold">☰</div>
+      <nav class="flex flex-col gap-6">
+        <div class="text-gray-400 hover:text-white cursor-pointer">🏠</div>
+        <div class="text-gray-400 hover:text-white cursor-pointer">📊</div>
+        <div class="text-gray-400 hover:text-white cursor-pointer">⚙️</div>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-6">
+      <h1 class="text-3xl font-bold mb-6">Dashboard de Edição</h1>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Identificação de Tráfego -->
+        <div class="bg-white p-4 shadow rounded">
+          <h2 class="text-xl font-semibold mb-2">Identificação de Tráfego</h2>
+          <canvas id="trafficChart"></canvas>
+        </div>
+
+        <!-- Tecnologia WiFi -->
+        <div class="bg-white p-4 shadow rounded">
+          <h2 class="text-xl font-semibold mb-2">WiFi Technology</h2>
+          <canvas id="wifiChart"></canvas>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Dados para o gráfico de Tráfego
+    new Chart(document.getElementById('trafficChart'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Twitter', 'SSL/TLS', 'LinkedIn', 'iCloud'],
+        datasets: [{
+          data: [66.8, 24.9, 14.8, 9.2],
+          backgroundColor: ['#4A90E2', '#50E3C2', '#F5A623', '#D0021B']
+        }]
+      }
+    });
+
+    // Dados para o gráfico de WiFi
+    new Chart(document.getElementById('wifiChart'), {
+      type: 'doughnut',
+      data: {
+        labels: ['WiFi 5', 'WiFi 6'],
+        datasets: [{
+          data: [60, 40],
+          backgroundColor: ['#7E57C2', '#FF7043']
+        }]
+      }
+    });
+  </script>
 </body>
 </html>
+            
 
