@@ -1,4 +1,4 @@
-<!DOCTYPE html<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
@@ -7,40 +7,87 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body class="bg-gray-100 font-sans">
+<body class="bg-gray-100 font-sans" id="body">
   <div class="flex h-screen">
-    <!-- Sidebar -->
-    <aside class="w-20 bg-gray-900 text-white flex flex-col items-center py-4">
-      <div class="mb-4 text-lg font-bold">☰</div>
+    <!-- Botões Funcionais do Menu -->
+    <aside id="sidebar" class="w-20 bg-gray-900 text-white flex flex-col items-center py-4 transition-all duration-300">
+        <img src="https://balnearioaguassantas.com.br/wp-content/uploads/2015/06/logo-exemplo.gif">
+      <div id="toggleBtn" class="mb-4 text-lg font-bold cursor-pointer">☰</div>
       <nav class="flex flex-col gap-6">
-        <div class="text-gray-400 hover:text-white cursor-pointer">🏠</div>
-        <div class="text-gray-400 hover:text-white cursor-pointer">📊</div>
-        <div class="text-gray-400 hover:text-white cursor-pointer">⚙️</div>
+        <div class="text-gray-400 hover:text-white cursor-pointer" onclick="showSection('home')">🏠 <span class="hidden sidebar-text">Home</span></div>
+        <div class="text-gray-400 hover:text-white cursor-pointer" onclick="showSection('dashboard')">📊 <span class="hidden sidebar-text">Dashboard</span></div>
+        <div class="text-gray-400 hover:text-white cursor-pointer" onclick="showSection('config')">⚙️ <span class="hidden sidebar-text">Config</span></div>
       </nav>
     </aside>
 
-    <!-- Main Content -->
+    <!-- Conteúdo do Main, classes do Tailwind e Nomes das Funções -->  
     <main class="flex-1 p-6">
-      <h1 class="text-3xl font-bold mb-6">Dashboard de Edição</h1>
+      <div id="home" class="section">
+        <h1 class="text-3xl font-bold mb-6 page-title">Home</h1>
+        <img src="https://cdn.awsli.com.br/600x1000/2648/2648923/produto/251570143/7716-32fenfp4j8.jpeg">
+        <p>Gateway PRO</p>
+        <h3>Network 7.5.187</h3>
+        
+      </div>
       
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Identificação de Tráfego -->
-        <div class="bg-white p-4 shadow rounded">
-          <h2 class="text-xl font-semibold mb-2">Identificação de Tráfego</h2>
-          <canvas id="trafficChart"></canvas>
+      <div id="dashboard" class="section hidden text-black">
+        <h1 class="text-3xl font-bold mb-6 page-title">Dashboard</h1>
+        <div class="grid grid-cols-1 md-grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="bg-white p-4 shadow rounded">
+            <h2 class="text-xl font-semibold mb-2">Identificação de Tráfego</h2>
+            <canvas id="trafficChart"></canvas>
+            <div class="bg-white p-4 shadow rounded">
+                <h2 class="text-xl font-semibold mb-2">Download</h2>
+                <p>134 MB</p>
+              </div>
+              <div class="bg-white p-4 shadow rounded">
+                <h2 class="text-xl font-semibold mb-2">Upload</h2>
+                <p>20.1 MB</p>
+              </div>
+              <div class="bg-white p-4 shadow rounded">
+                <h2 class="text-xl font-semibold mb-2">Total</h2>
+                <p>154 MB</p>
+              </div>
+              
+          </div>
+          <div class="bg-white p-4 shadow rounded">
+            <h2 class="text-xl font-semibold mb-2">WiFi Technology</h2>
+            <canvas id="wifiChart"></canvas>
+          </div>
+          
+          <div class="bg-white p-4 shadow rounded">
+            <h2 class="text-xl font-semibold mb-2">Teste de Velocidade de Internet</h2>
+            <button id="speedTestBtn" class="bg-blue-500 text-white px-4 py-2 rounded">Iniciar Teste</button>
+            <p id="speedResult" class="mt-2 text-lg"></p>
+          </div>
         </div>
-
-        <!-- Tecnologia WiFi -->
-        <div class="bg-white p-4 shadow rounded">
-          <h2 class="text-xl font-semibold mb-2">WiFi Technology</h2>
-          <canvas id="wifiChart"></canvas>
+      </div>
+      
+      <div id="config" class="section hidden">
+        <h1 class="text-3xl font-bold mb-6 page-title">Configurações</h1>
+        <p>Ajuste suas preferências aqui.</p>
+        <div class="mt-4">
+          <button id="toggleThemeBtn" class="bg-purple-600 text-white px-4 py-2 rounded">
+            Alternar Tema Claro/Escuro
+          </button>
         </div>
       </div>
     </main>
   </div>
 
   <script>
-    // Dados para o gráfico de Tráfego
+    function showSection(sectionId) {
+      document.querySelectorAll('.section').forEach(section => section.classList.add('hidden'));
+      document.getElementById(sectionId).classList.remove('hidden');
+    }
+
+    document.getElementById('toggleBtn').addEventListener('click', function() {
+      let sidebar = document.getElementById('sidebar');
+      let texts = document.querySelectorAll('.sidebar-text');
+      sidebar.classList.toggle('w-64');
+      texts.forEach(text => text.classList.toggle('hidden'));
+    });
+
     new Chart(document.getElementById('trafficChart'), {
       type: 'doughnut',
       data: {
@@ -52,7 +99,6 @@
       }
     });
 
-    // Dados para o gráfico de WiFi
     new Chart(document.getElementById('wifiChart'), {
       type: 'doughnut',
       data: {
@@ -63,8 +109,32 @@
         }]
       }
     });
+
+    document.getElementById('speedTestBtn').addEventListener('click', function() {
+      let resultText = document.getElementById('speedResult');
+      resultText.textContent = 'Testando...';
+
+      setTimeout(() => {
+        let speed = (Math.random() * (100 - 10) + 10).toFixed(2);
+        resultText.textContent = `Velocidade: ${speed} Mbps`;
+      }, 2000);
+    });
+
+    // Alternância de Tema
+    document.getElementById('toggleThemeBtn').addEventListener('click', function() {
+      const body = document.getElementById('body');
+      const titles = document.querySelectorAll('.page-title');
+
+      if (body.classList.contains('bg-gray-100')) {
+        body.classList.remove('bg-gray-100');
+        body.classList.add('bg-gray-900', 'text-white');
+        titles.forEach(title => title.classList.add('text-white'));
+      } else {
+        body.classList.remove('bg-gray-900', 'text-white');
+        body.classList.add('bg-gray-100');
+        titles.forEach(title => title.classList.remove('text-white'));
+      }
+    });
   </script>
 </body>
 </html>
-            
-
